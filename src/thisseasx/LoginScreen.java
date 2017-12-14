@@ -3,8 +3,9 @@ package thisseasx;
 public class LoginScreen {
 
     public static void main(String[] args) {
-        //noinspection StatementWithEmptyBody
-        while (!DatabaseConnector.login()) {
-        }
+        DBConnector dbc = new DBConnector();
+        // noinspection StatementWithEmptyBody
+        while (!dbc.login()) ;
+        MenuScreen.main(new String[]{dbc.getUsername(), String.valueOf(dbc.isAdmin())});
     }
 }

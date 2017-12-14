@@ -5,9 +5,20 @@ import com.sun.xml.internal.ws.util.StringUtils;
 import java.sql.*;
 import java.util.Scanner;
 
-class DatabaseConnector {
+class DBConnector {
 
-    static boolean login() {
+    private String username;
+    private boolean admin;
+
+    boolean isAdmin() {
+        return admin;
+    }
+
+    String getUsername() {
+        return username;
+    }
+
+    boolean login() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -18,16 +29,17 @@ class DatabaseConnector {
         String dbUsername = "thiss";
         String dbPassword = "123";
 
-        String username = input(0);
+        username = input(0).toLowerCase();
         String password = input(1);
 
-        String sql = "select password from accounts where name = ?";
+        String sql = "select _password, _access from accounts where _name = ?";
 
         try (Connection conn = DriverManager.getConnection(url, dbUsername, dbPassword);
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             ResultSet data = ps.executeQuery();
-            if (data.next() && data.getString("password").equals(password)) {
+            if (data.next() && data.getString("_password").equals(password)) {
+                admin = data.getInt("_access") > 4;
                 System.out.printf("Welcome %s! How may I help you today?%n", StringUtils.capitalize(username));
                 return true;
             }
