@@ -1,9 +1,9 @@
 package thisseasx;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-
 import java.sql.*;
 import java.util.Scanner;
+
+import static thisseasx.ANSI.*;
 
 class DBConnector {
 
@@ -32,21 +32,21 @@ class DBConnector {
         username = input(0).toLowerCase();
         String password = input(1);
 
-        String sql = "select _password, _access from accounts where _name = ?";
+        String sql = "select _password, _admin from accounts where _name = ?";
 
         try (Connection conn = DriverManager.getConnection(url, dbUsername, dbPassword);
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             ResultSet data = ps.executeQuery();
             if (data.next() && data.getString("_password").equals(password)) {
-                admin = data.getInt("_access") > 4;
-                System.out.printf("Welcome %s! How may I help you today?%n", StringUtils.capitalize(username));
+                admin = data.getBoolean("_admin");
+                printColored(GREEN, "--- Login Successful ---");
                 return true;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        System.out.println("--- Wrong username or password, please try again ---");
+        printColored(RED, "--- Wrong username or password, please try again ---\n");
         return false;
     }
 
