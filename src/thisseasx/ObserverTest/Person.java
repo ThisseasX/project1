@@ -10,8 +10,7 @@ class Person implements Observer {
         this.email = name + "@troll.com";
     }
 
-    @Override
-    public String getName() {
+    String getName() {
         return name;
     }
 
