@@ -73,6 +73,7 @@ public class ObserverTest {
                 break;
             case NOTIFY:
                 notifyAllObservers();
+                break;
             case CLEAR:
                 products.forEach(Product::clearObservers);
                 System.out.println();
@@ -134,7 +135,7 @@ public class ObserverTest {
     private static void showProduct(Product p) {
         StringBuilder sb = new StringBuilder();
         int number = products.indexOf(p) + 1;
-        sb.append(number + 1).append(") ").append(p.getProductName());
+        sb.append(number).append(") ").append(p.getProductName());
         if (p.getObservers().size() > 0) sb.append(":");
         for (Observer o : p.getObservers()) {
             sb.append(" ").append(RED).append(o.getName()).append(RESET);

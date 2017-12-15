@@ -53,7 +53,8 @@ class DBConnector {
     private static String input(int i) {
         Scanner sc = new Scanner(System.in);
         String[] questions = {"username", "password"};
-        System.out.printf("Please enter your %s:%n", questions[i]);
+        String prompt = String.format("Please enter your %s:%n", questions[i]);
+        printColored(BLUE, prompt);
         return sc.nextLine();
     }
 }
