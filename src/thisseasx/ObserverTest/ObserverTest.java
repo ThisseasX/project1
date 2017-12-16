@@ -118,7 +118,7 @@ public class ObserverTest {
             if (product.getObservers().size() < 1) continue;
             System.out.printf("Product %s%s%s is observed by:", GREEN, product.getProductName(), RESET);
             for (Observer observer : product.getObservers()) {
-                System.out.printf(" %s%s%s", RED, observer.getName(), RESET);
+                System.out.printf(" %s%s%s", RED, ((Person) observer).getName(), RESET);
                 empty = false;
             }
             System.out.println();
@@ -138,7 +138,7 @@ public class ObserverTest {
         sb.append(number).append(") ").append(p.getProductName());
         if (p.getObservers().size() > 0) sb.append(":");
         for (Observer o : p.getObservers()) {
-            sb.append(" ").append(RED).append(o.getName()).append(RESET);
+            sb.append(" ").append(RED).append(((Person) o).getName()).append(RESET);
         }
         System.out.println(sb);
     }
@@ -163,13 +163,6 @@ public class ObserverTest {
         p.removeObserver(o);
     }
 
-
-    /*  private static int getAvailableCommands(List list) {
-          List<Integer> indexList = new ArrayList<>();
-          for (Object o : list) {
-
-          }
-      }*/
     private static int getCommand(List list) {
         int size = list.size();
         int command;
