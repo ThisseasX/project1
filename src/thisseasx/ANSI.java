@@ -7,8 +7,9 @@ class ANSI {
             YELLOW = "\u001b[33m",
             BLUE = "\u001b[34m",
             MAGENTA = "\u001b[35m",
-            CYAN = "\u001b[36m",
-            RESET = "\u001b[0m";
+            CYAN = "\u001b[36m";
+
+    private static final String RESET = "\u001b[0m";
 
     static void printColored(String color, String text) {
         StringBuilder sb = new StringBuilder();

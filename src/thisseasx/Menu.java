@@ -16,7 +16,7 @@ class Menu {
 
     private Menu(User user) {
         this.user = user;
-        if (user.isAdmin()) {
+        if (user.getUsername().equals("admin")) {
             actions.addAll(Arrays.asList(
                     Action.VIEW_CO_OP_ACCOUNT,
                     Action.VIEW_MEMBER_ACCOUNTS,
@@ -36,27 +36,28 @@ class Menu {
 
     boolean executeAction() {
         Action action = requestAction();
+        AccountManager accountManager = new AccountManager(user);
         switch (action) {
             case VIEW_CO_OP_ACCOUNT:
-                Accounts.viewCoOpAccount(user);
+                accountManager.viewCoOpAccount();
                 break;
             case VIEW_MEMBER_ACCOUNTS:
-                Accounts.viewMemberAccounts(user);
+                accountManager.viewMemberAccounts();
                 break;
             case VIEW_OWN_ACCOUNT:
-                Accounts.viewOwnAccount(user);
+                accountManager.viewOwnAccount();
                 break;
             case WITHDRAW_FROM_MEMBER:
-                Accounts.withdrawFromMember(user);
+                accountManager.withdrawFromMember();
                 break;
             case DEPOSIT_TO_MEMBER:
-                Accounts.depositToMember(user);
+                accountManager.depositToMember();
                 break;
             case DEPOSIT_TO_CO_OP:
-                Accounts.depositToCoOp(user);
+                accountManager.depositToCoOp();
                 break;
             case SEND_STATEMENT:
-                Accounts.sendStatement(user);
+                accountManager.sendStatement();
                 return false;
         }
         return true;
@@ -84,12 +85,12 @@ class Menu {
     }
 
     private enum Action {
-        VIEW_CO_OP_ACCOUNT("View Co-operative's Account"),
-        VIEW_MEMBER_ACCOUNTS("View Member Accounts"),
-        VIEW_OWN_ACCOUNT("View your Account"),
-        WITHDRAW_FROM_MEMBER("Withdraw from another Member's Account"),
-        DEPOSIT_TO_MEMBER("Deposit to another Member's Account"),
-        DEPOSIT_TO_CO_OP("Deposit to the Co-operative's Account"),
+        VIEW_CO_OP_ACCOUNT("View Co-operative's Account."),
+        VIEW_MEMBER_ACCOUNTS("View Member Accounts."),
+        VIEW_OWN_ACCOUNT("View your Account."),
+        WITHDRAW_FROM_MEMBER("Withdraw from another Member's Account."),
+        DEPOSIT_TO_MEMBER("Deposit to another Member's Account."),
+        DEPOSIT_TO_CO_OP("Deposit to the Co-operative's Account."),
         SEND_STATEMENT("Send today's statement and logout.");
 
         private String hint;

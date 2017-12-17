@@ -6,8 +6,7 @@ class User {
 
     private String username;
     private String password;
-    private boolean admin;
-
+    private int id;
     private Statement statement;
 
     String getUsername() {
@@ -24,24 +23,37 @@ class User {
         this.password = password;
     }
 
-    boolean isAdmin() {
-        return admin;
+    int getId() {
+        return id;
     }
-    void setAdmin(boolean admin) {
-        this.admin = admin;
+    void setId(int id) {
+        this.id = id;
     }
 
+    void setStatement(Statement statement) {
+        this.statement = statement;
+    }
+
+    String getStatementFileName() {
+        return statement.getFileName();
+    }
+    void addTransaction(String transactionName) {
+        statement.addTransaction(transactionName);
+    }
+    void writeStatement(){
+        statement.writeStatement();
+    }
+
+
     void welcome() {
-        String accessLevel = admin ? "admin" : "user";
-        String welcome = String.format("Welcome %s %s! How may I help you today?%n",
-                accessLevel, StringUtils.capitalize(username));
+        String welcome = String.format("Welcome %s! How may I help you today?%n",
+                StringUtils.capitalize(username));
         ANSI.printColored(ANSI.BLUE, welcome);
     }
 
     void bye() {
-        String accessLevel = admin ? "admin" : "user";
-        String welcome = String.format("Goodbye %s %s! Please come again!%n",
-                accessLevel, StringUtils.capitalize(username));
+        String welcome = String.format("Goodbye %s! Please come again!%n",
+                StringUtils.capitalize(username));
         ANSI.printColored(ANSI.BLUE, welcome);
     }
 
