@@ -1,0 +1,59 @@
+Sun Dec 17 03:31:06 EET 2017
+
+--- Requesting to view your account balance ---
+
+Your account balance is: €1572.
+
+--- Requesting deposit to the Co-operative's account---
+
+Deposited €100 to the Co-operative's account.
+
+--- Requesting deposit ---
+
+Deposited €100 to user1's account.
+
+### END OF TODAY'S STATEMENT ###
+
+
+Sun Dec 17 03:31:56 EET 2017
+
+--- Requesting to view your account balance ---
+
+Your account balance is: €1372.
+
+--- Requesting deposit ---
+
+Deposited €1372 to user1's account.
+
+--- Requesting to view your account balance ---
+
+Your account balance is: €0.
+
+### END OF TODAY'S STATEMENT ###
+
+
+Sun Dec 17 04:06:57 EET 2017
+
+--- Requesting to view your account balance ---
+
+Your account balance is: €1100.
+
+--- Requesting deposit to the Co-operative's account---
+
+Deposited €100 to the Co-operative's account.
+
+--- Requesting to view your account balance ---
+
+Your account balance is: €1000.
+
+--- Requesting deposit ---
+
+Deposited €100 to user1's account.
+
+--- Requesting to view your account balance ---
+
+Your account balance is: €900.
+
+### END OF TODAY'S STATEMENT ###
+
+
