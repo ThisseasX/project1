@@ -52,7 +52,7 @@ class User {
     }
 
     void bye() {
-        String welcome = String.format("Goodbye %s! Please come again!%n",
+        String welcome = String.format("Goodbye %s! Have a great day!%n",
                 StringUtils.capitalize(username));
         ANSI.printColored(ANSI.BLUE, welcome);
     }

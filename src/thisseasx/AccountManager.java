@@ -28,7 +28,7 @@ class AccountManager {
 
     private void finalizeTransaction(String transaction) {
         user.addTransaction(transaction);
-        printColored(BLUE, "\n" + transaction + "\n");
+        printColoredWithWarning(GREEN, BLUE, "\n" + transaction + "\n");
     }
 
     void viewMemberAccounts() {
