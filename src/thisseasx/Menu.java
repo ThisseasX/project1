@@ -8,7 +8,7 @@ class Menu {
 
     private final User user;
 
-    private List<Action> actions = new ArrayList<>();
+    private final List<Action> actions = new ArrayList<>();
 
     static Menu loadMenu(User user) {
         return new Menu(user);
@@ -93,7 +93,7 @@ class Menu {
         DEPOSIT_TO_CO_OP("Deposit to the Co-operative's Account."),
         SEND_STATEMENT("Send today's statement and logout.");
 
-        private String hint;
+        private final String hint;
 
         Action(String hint) {
             this.hint = hint;

@@ -8,14 +8,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static thisseasx.ANSI.CYAN;
 import static thisseasx.ANSI.MAGENTA;
 import static thisseasx.ANSI.printColored;
 
 class Statement {
 
     private final User user;
-    private List<String> history = new ArrayList<>();
+    private final List<String> history = new ArrayList<>();
 
     Statement(User user) {
         this.user = user;

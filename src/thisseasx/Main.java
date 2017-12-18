@@ -1,6 +1,6 @@
 package thisseasx;
 
-public class Main {
+class Main {
 
     public static void main(String[] args) {
         User user = Login.login();

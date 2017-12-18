@@ -17,6 +17,7 @@ class ANSI {
         System.out.println(sb);
     }
 
+    @SuppressWarnings("SameParameterValue")
     static void printColoredWithWarning(String color1, String color2, String text) {
         StringBuilder sb = new StringBuilder();
         sb.append(color1);
