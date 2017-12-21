@@ -21,8 +21,8 @@ class AccountManager {
 
     private boolean hasZeroBalance(User source) {
         if (DBConnector.getBalance(source) <= 0) {
-            String sourceAccount = source.getId() == 1 ?
-                    StringUtils.capitalize(source.getUsername()) + 's' :
+            String sourceAccount = user.getId() == 1 ?
+                    StringUtils.capitalize(source.getUsername()) + "'s" :
                     "Your";
             printColored(RED, String.format("--- %s account balance is 0 ---\n",
                     sourceAccount));
