@@ -24,7 +24,7 @@ class DBConnector {
 
     private static final String SQL_UPDATE = "update accounts set amount = ? where user_id = ?";
 
-    static boolean query(User user) {
+    static boolean queryUser(User user) {
         initializeJDBC();
 
         String[] columns = {COL_PASSWORD, COL_ID};

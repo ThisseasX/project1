@@ -28,7 +28,7 @@ class Statement {
         StringBuilder sb = new StringBuilder();
 
         String date = new SimpleDateFormat("dd_MM_yyyy").format(Calendar.getInstance().getTime());
-        String username = user.getUsername();
+        String username = user.getId() == 1 ? "admin" : user.getUsername();
 
         sb.append("statement").append("_")
                 .append(username).append("_")

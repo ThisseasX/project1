@@ -30,8 +30,8 @@ class User {
         this.id = id;
     }
 
-    void setStatement(Statement statement) {
-        this.statement = statement;
+    void initializeStatement() {
+        this.statement = new Statement(this);
     }
 
     String getStatementFileName() {
@@ -43,7 +43,6 @@ class User {
     void writeStatement(){
         statement.writeStatement();
     }
-
 
     void welcome() {
         String welcome = String.format("Welcome %s! How may I help you today?%n",

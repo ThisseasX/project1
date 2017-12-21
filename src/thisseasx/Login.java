@@ -17,13 +17,14 @@ class Login {
         User user = new User();
         while (true) if (loggedInSuccessfully(user)) break;
         user.welcome();
+        user.initializeStatement();
         return user;
     }
 
     private static boolean loggedInSuccessfully(User user) {
         user.setUsername(input(USERNAME).toLowerCase());
         user.setPassword(input(PASSWORD));
-        if (DBConnector.query(user)) return true;
+        if (DBConnector.queryUser(user)) return true;
         printColored(RED, "--- Wrong username or password, please try again ---");
         return false;
     }

@@ -16,7 +16,7 @@ class Menu {
 
     private Menu(User user) {
         this.user = user;
-        if (user.getUsername().equals("admin")) {
+        if (user.getId() == 1) {
             actions.addAll(Arrays.asList(
                     Action.VIEW_CO_OP_ACCOUNT,
                     Action.VIEW_MEMBER_ACCOUNTS,
