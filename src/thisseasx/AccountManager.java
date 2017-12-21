@@ -19,6 +19,54 @@ class AccountManager {
         this.otherUsers = new ArrayList<>(DBConnector.getOtherUsers(user));
     }
 
+    private boolean hasZeroBalance(User source) {
+        if (DBConnector.getBalance(source) <= 0) {
+            String sourceAccount = source.getId() == 1 ?
+                    StringUtils.capitalize(source.getUsername()) + 's' :
+                    "Your";
+            printColored(RED, String.format("--- %s account balance is 0 ---\n",
+                    sourceAccount));
+            return true;
+        }
+        return false;
+    }
+
+    private User requestUser(boolean deposit) {
+        Scanner sc = new Scanner(System.in);
+        String prompt = deposit ? "deposit to" : "withdraw from";
+        int userIndex;
+        while (true) {
+            printColored(BLUE, String.format("Please choose a user to %s their account.", prompt));
+            otherUsers.forEach(x -> printColored(CYAN, String.format(("%s) %s"), otherUsers.indexOf(x) + 1, x)));
+            try {
+                userIndex = sc.nextInt();
+                if (userIndex > 0 && userIndex <= otherUsers.size()) break;
+                printColored(RED, String.format("--- You must input a number between 1 and %s ---", otherUsers.size()));
+            } catch (InputMismatchException e) {
+                printColored(RED, "--- That's not a number ---");
+                sc.nextLine();
+            }
+        }
+        return otherUsers.get(userIndex - 1);
+    }
+
+    private int requestAmount() {
+        Scanner sc = new Scanner(System.in);
+        int amount;
+        while (true) {
+            printColored(BLUE, "Please choose an amount.");
+            try {
+                amount = sc.nextInt();
+                if (amount > 0) break;
+                printColored(RED, "--- You must input a positive amount ---");
+            } catch (InputMismatchException e) {
+                printColored(RED, "--- That's not a number ---");
+                sc.nextLine();
+            }
+        }
+        return amount;
+    }
+
     void viewCoOpAccount() {
         int amount = DBConnector.getBalance(user);
         String transaction = "--- Requesting to view the Co-Operative's account balance ---\n\n" +
@@ -51,7 +99,8 @@ class AccountManager {
     }
 
     void withdrawFromMember() {
-        User source = requestUser();
+        User source = requestUser(false);
+        if (hasZeroBalance(source)) return;
         int amount;
         while (true) {
             amount = requestAmount();
@@ -66,43 +115,9 @@ class AccountManager {
         finalizeTransaction(transaction);
     }
 
-    private int requestAmount() {
-        Scanner sc = new Scanner(System.in);
-        int amount;
-        while (true) {
-            printColored(BLUE, "Please choose an amount.");
-            try {
-                amount = sc.nextInt();
-                if (amount > 0) break;
-                printColored(RED, "--- You must input a positive amount ---");
-            } catch (InputMismatchException e) {
-                printColored(RED, "--- That's not a number ---");
-                sc.nextLine();
-            }
-        }
-        return amount;
-    }
-
-    private User requestUser() {
-        Scanner sc = new Scanner(System.in);
-        int userIndex;
-        while (true) {
-            printColored(BLUE, "Please choose a user to withdraw from their account.");
-            otherUsers.forEach(x -> printColored(CYAN, String.format(("%s) %s"), otherUsers.indexOf(x) + 1, x)));
-            try {
-                userIndex = sc.nextInt();
-                if (userIndex > 0 && userIndex <= otherUsers.size()) break;
-                printColored(RED, String.format("--- You must input a number between 1 and %s ---", otherUsers.size()));
-            } catch (InputMismatchException e) {
-                printColored(RED, "--- That's not a number ---");
-                sc.nextLine();
-            }
-        }
-        return otherUsers.get(userIndex - 1);
-    }
-
     void depositToMember() {
-        User target = requestUser();
+        if (hasZeroBalance(user)) return;
+        User target = requestUser(true);
         int amount;
         while (true) {
             amount = requestAmount();
@@ -118,6 +133,7 @@ class AccountManager {
     }
 
     void depositToCoOp() {
+        if (hasZeroBalance(user)) return;
         User target = new User();
         target.setId(1);
         int amount;
