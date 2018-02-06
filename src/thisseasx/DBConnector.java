@@ -22,24 +22,28 @@ class DBConnector {
     private static final String COL_USER_ID = "user_id";
     private static final String COL_AMOUNT = "amount";
 
-    private static final String SQL_UPDATE = "update accounts set amount = ? where user_id = ?";
+    private static final String SQL_UPDATE = "UPDATE accounts SET amount = ? WHERE user_id = ?";
 
     static boolean queryUser(User user) {
         initializeJDBC();
 
-        String[] columns = {COL_PASSWORD, COL_ID};
-        String[] selection = {COL_USERNAME + "=?"};
+        String[] columns = {COL_ID};
+        String[] selection = {COL_USERNAME + "=?", COL_PASSWORD + "=?"};
         String sql = sqlQueryBuilder(TABLE_USERS, columns, selection);
 
         try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD);
              PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
             ResultSet data = ps.executeQuery();
-            if (data.next() && data.getString("password").equals(user.getPassword())) {
+
+            if (data.next()) {
                 user.setId(data.getInt("id"));
                 printColored(GREEN, "--- Login Successful ---");
                 return true;
             }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -55,9 +59,11 @@ class DBConnector {
 
         try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD);
              PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setString(1, user.getUsername());
             ps.setInt(2, 1);
             ResultSet data = ps.executeQuery();
+
             while (data.next()) {
                 User otherUser = new User();
                 otherUser.setUsername(data.getString("username"));
@@ -65,6 +71,7 @@ class DBConnector {
                 otherUser.setId(data.getInt("id"));
                 users.add(otherUser);
             }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -73,14 +80,14 @@ class DBConnector {
 
     private static String sqlQueryBuilder(String table, String[] columns, String[] selection) {
         StringBuilder sb = new StringBuilder();
-        sb.append("select ");
+        sb.append("SELECT ");
         for (int i = 0; i < columns.length; i++) {
             sb.append(columns[i]);
             if (i == columns.length - 1) break;
             sb.append(", ");
         }
-        sb.append(" from ").append(table);
-        sb.append(" where ");
+        sb.append(" FROM ").append(table);
+        sb.append(" WHERE ");
         for (int i = 0; i < selection.length; i++) {
             sb.append(selection[i]);
             if (i == selection.length - 1) break;
@@ -96,11 +103,14 @@ class DBConnector {
 
         try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD);
              PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setInt(1, user.getId());
             ResultSet data = ps.executeQuery();
+
             if (data.next()) {
                 return data.getInt("amount");
             }
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -110,10 +120,12 @@ class DBConnector {
     private static void deposit(int amount, User target) {
         try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD);
              PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
+
             int finalAmount = getBalance(target) + amount;
             ps.setInt(1, finalAmount);
             ps.setInt(2, target.getId());
             ps.execute();
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -122,11 +134,13 @@ class DBConnector {
     private static boolean withdraw(int amount, User source) {
         try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD);
              PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
+
             int finalAmount = getBalance(source) - amount;
             if (finalAmount < 0) return false;
             ps.setInt(1, finalAmount);
             ps.setInt(2, source.getId());
             ps.execute();
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

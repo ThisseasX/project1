@@ -6,16 +6,12 @@ import static thisseasx.ANSI.*;
 
 class Menu {
 
-    private final User user;
-
+    private final AccountManager accountManager;
     private final List<Action> actions = new ArrayList<>();
 
-    static Menu loadMenu(User user) {
-        return new Menu(user);
-    }
+    Menu(User user) {
+        accountManager = new AccountManager(user);
 
-    private Menu(User user) {
-        this.user = user;
         if (user.getId() == 1) {
             actions.addAll(Arrays.asList(
                     Action.VIEW_CO_OP_ACCOUNT,
@@ -36,7 +32,6 @@ class Menu {
 
     boolean executeAction() {
         Action action = requestAction();
-        AccountManager accountManager = new AccountManager(user);
         switch (action) {
             case VIEW_CO_OP_ACCOUNT:
                 accountManager.viewCoOpAccount();

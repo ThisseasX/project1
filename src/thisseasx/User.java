@@ -7,7 +7,6 @@ class User {
     private String username;
     private String password;
     private int id;
-    private Statement statement;
 
     String getUsername() {
         return username;
@@ -30,28 +29,14 @@ class User {
         this.id = id;
     }
 
-    void initializeStatement() {
-        this.statement = new Statement(this);
-    }
-
-    String getStatementFileName() {
-        return statement.getFileName();
-    }
-    void addTransaction(String transactionName) {
-        statement.addTransaction(transactionName);
-    }
-    void writeStatement(){
-        statement.writeStatement();
-    }
-
     void welcome() {
-        String welcome = String.format("Welcome %s! How may I help you today?%n",
+        String welcome = String.format("\nWelcome %s! How may I help you today?%n",
                 StringUtils.capitalize(username));
         ANSI.printColored(ANSI.BLUE, welcome);
     }
 
     void bye() {
-        String welcome = String.format("Goodbye %s! Have a great day!%n",
+        String welcome = String.format("\nGoodbye %s! Have a great day!%n",
                 StringUtils.capitalize(username));
         ANSI.printColored(ANSI.BLUE, welcome);
     }

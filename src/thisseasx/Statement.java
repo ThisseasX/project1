@@ -13,18 +13,13 @@ import static thisseasx.ANSI.printColored;
 
 class Statement {
 
-    private final User user;
-    private final List<String> history = new ArrayList<>();
+    private static final List<String> history = new ArrayList<>();
 
-    Statement(User user) {
-        this.user = user;
-    }
-
-    void addTransaction(String transactionName) {
+    static void addTransaction(String transactionName) {
         history.add(transactionName);
     }
 
-    String getFileName() {
+    private static String getFileName(User user) {
         StringBuilder sb = new StringBuilder();
 
         String date = new SimpleDateFormat("dd_MM_yyyy").format(Calendar.getInstance().getTime());
@@ -37,18 +32,18 @@ class Statement {
         return sb.toString();
     }
 
-    private String getHistory() {
+    private static String getHistory() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Calendar.getInstance().getTime()).append("\n\n");
+        sb.append("### ").append(Calendar.getInstance().getTime()).append(" ###").append("\n\n");
         history.forEach(x -> sb.append(x).append("\n\n"));
         return sb.toString();
     }
 
-    void writeStatement() {
+    static void writeStatement(User user) {
         printColored(MAGENTA, "### TODAY'S STATEMENT ###\n");
         printColored(MAGENTA, getHistory());
         try {
-            PrintWriter pw = new PrintWriter(new FileWriter(user.getStatementFileName(), true));
+            PrintWriter pw = new PrintWriter(new FileWriter(getFileName(user), true));
             pw.append(getHistory()).append("\n");
             pw.close();
         } catch (IOException e) {

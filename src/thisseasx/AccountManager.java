@@ -74,11 +74,6 @@ class AccountManager {
         finalizeTransaction(transaction);
     }
 
-    private void finalizeTransaction(String transaction) {
-        user.addTransaction(transaction);
-        printColoredWithWarning(GREEN, BLUE, "\n" + transaction + "\n");
-    }
-
     void viewMemberAccounts() {
         StringBuilder sb = new StringBuilder();
         sb.append("--- Requesting to view other members' account balance ---\n\n");
@@ -150,7 +145,12 @@ class AccountManager {
     }
 
     void sendStatement() {
-        user.addTransaction("### END OF TODAY'S STATEMENT ###");
-        user.writeStatement();
+        Statement.addTransaction("### END OF TODAY'S STATEMENT ###");
+        Statement.writeStatement(user);
+    }
+
+    private void finalizeTransaction(String transaction) {
+        Statement.addTransaction(transaction);
+        printColoredWithWarning(GREEN, BLUE, "\n" + transaction + "\n");
     }
 }

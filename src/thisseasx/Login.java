@@ -17,7 +17,6 @@ class Login {
         User user = new User();
         while (true) if (loggedInSuccessfully(user)) break;
         user.welcome();
-        user.initializeStatement();
         return user;
     }
 
