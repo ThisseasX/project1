@@ -3,14 +3,14 @@ package thisseasx.util;
 public class ANSI {
 
     public static final String
-            RED = "",
-            GREEN = "",
-            YELLOW = "",
-            BLUE = "",
-            MAGENTA = "",
-            CYAN = "";
+            RED = "\u001b[31m",
+            GREEN = "\u001b[32m",
+            YELLOW = "\u001b[33m",
+            BLUE = "\u001b[34m",
+            MAGENTA = "\u001b[35m",
+            CYAN = "\u001b[36m";
 
-    private static final String RESET = "";
+    private static final String RESET = "\u001b[0m";
 
     public static void printColored(String color, String text) {
         StringBuilder sb = new StringBuilder();
