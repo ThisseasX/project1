@@ -3,6 +3,8 @@ package thisseasx.util;
 import thisseasx.model.User;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +26,10 @@ public class DBConnector {
     private static final String COL_USER_ID = "user_id";
     private static final String COL_AMOUNT = "amount";
 
-    private static final String SQL_UPDATE = "UPDATE accounts SET amount = ? WHERE user_id = ?";
+    private static final String SQL_UPDATE = "" +
+            "UPDATE accounts " +
+            "SET amount = ?, transaction_date = ? " +
+            "WHERE user_id = ?";
 
     public static boolean queryUser(User user, String password) {
         initializeJDBC();
@@ -124,7 +129,11 @@ public class DBConnector {
 
             int finalAmount = getBalance(target) + amount;
             ps.setInt(1, finalAmount);
-            ps.setInt(2, target.getId());
+            String now = LocalDateTime
+                    .now()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+            ps.setString(2, now);
+            ps.setInt(3, target.getId());
             ps.execute();
 
         } catch (SQLException e) {
@@ -139,7 +148,11 @@ public class DBConnector {
             int finalAmount = getBalance(source) - amount;
             if (finalAmount < 0) return false;
             ps.setInt(1, finalAmount);
-            ps.setInt(2, source.getId());
+            String now = LocalDateTime
+                    .now()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+            ps.setString(2, now);
+            ps.setInt(3, source.getId());
             ps.execute();
 
         } catch (SQLException e) {

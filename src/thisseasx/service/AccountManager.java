@@ -1,6 +1,7 @@
 package thisseasx.service;
 
 import thisseasx.model.User;
+import thisseasx.util.CLS;
 import thisseasx.util.DBConnector;
 import thisseasx.util.StringUtils;
 
@@ -11,6 +12,7 @@ import java.util.Scanner;
 
 import static thisseasx.util.ANSI.*;
 
+@SuppressWarnings("Duplicates")
 public class AccountManager {
 
     private final User user;
@@ -38,6 +40,7 @@ public class AccountManager {
         String prompt = deposit ? "deposit to" : "withdraw from";
         int userIndex;
         while (true) {
+            CLS.cls();
             printColored(BLUE, String.format("Please choose a user to %s their account.", prompt));
             otherUsers.forEach(x -> printColored(CYAN, String.format(("%s) %s"), otherUsers.indexOf(x) + 1, x)));
             //noinspection Duplicates
@@ -57,6 +60,7 @@ public class AccountManager {
         Scanner sc = new Scanner(System.in);
         int amount;
         while (true) {
+            CLS.cls();
             printColored(BLUE, "Please choose an amount.");
             try {
                 amount = sc.nextInt();
@@ -71,6 +75,7 @@ public class AccountManager {
     }
 
     public void viewCoOpAccount() {
+        CLS.cls();
         int amount = DBConnector.getBalance(user);
         String transaction = "--- Requesting to view the Co-Operative's account balance ---\n\n" +
                 String.format("The Co-operative's account balance is: €%s.", amount);
@@ -78,6 +83,7 @@ public class AccountManager {
     }
 
     public void viewMemberAccounts() {
+        CLS.cls();
         StringBuilder sb = new StringBuilder();
         sb.append("--- Requesting to view other members' account balance ---\n\n");
         for (User otherUser : otherUsers) {
@@ -90,6 +96,7 @@ public class AccountManager {
     }
 
     public void viewOwnAccount() {
+        CLS.cls();
         int amount = DBConnector.getBalance(user);
         String transaction = "--- Requesting to view your account balance ---\n\n" +
                 String.format("Your account balance is: €%s.", amount);
@@ -101,11 +108,13 @@ public class AccountManager {
         if (hasZeroBalance(source)) return;
         int amount;
         while (true) {
+            CLS.cls();
             amount = requestAmount();
             if (DBConnector.transfer(amount, source, user)) break;
             printColored(RED, "--- INSUFFICIENT BALANCE ---");
         }
 
+        CLS.cls();
         String transaction = "--- Requesting withdrawal ---\n\n" +
                 String.format("Withdrew €%s from %s's account into the Co-operative's account.",
                         amount, source);
@@ -118,11 +127,13 @@ public class AccountManager {
         User target = requestUser(true);
         int amount;
         while (true) {
+            CLS.cls();
             amount = requestAmount();
             if (DBConnector.transfer(amount, user, target)) break;
             printColored(RED, "--- INSUFFICIENT BALANCE ---");
         }
 
+        CLS.cls();
         String transaction = "--- Requesting deposit ---\n\n" +
                 String.format("Deposited €%s to %s's account.",
                         amount, target);
@@ -136,11 +147,13 @@ public class AccountManager {
         target.setId(1);
         int amount;
         while (true) {
+            CLS.cls();
             amount = requestAmount();
             if (DBConnector.transfer(amount, user, target)) break;
             printColored(RED, "--- INSUFFICIENT BALANCE ---");
         }
 
+        CLS.cls();
         String transaction = "--- Requesting deposit to the Co-operative's account---\n\n" +
                 String.format("Deposited €%s to the Co-operative's account.", amount);
 
@@ -148,6 +161,7 @@ public class AccountManager {
     }
 
     public void sendStatement() {
+        CLS.cls();
         Statement.addTransaction("### END OF TODAY'S STATEMENT ###");
         Statement.writeStatement(user);
     }
