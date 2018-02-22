@@ -1,19 +1,22 @@
-package thisseasx;
+package thisseasx.service;
+
+import thisseasx.model.User;
+import thisseasx.util.DBConnector;
 
 import java.util.Scanner;
 
-import static thisseasx.ANSI.*;
-import static thisseasx.Login.UserInfo.PASSWORD;
-import static thisseasx.Login.UserInfo.USERNAME;
+import static thisseasx.service.Login.UserInfo.PASSWORD;
+import static thisseasx.service.Login.UserInfo.USERNAME;
+import static thisseasx.util.ANSI.*;
 
-class Login {
+public class Login {
 
     enum UserInfo {
         USERNAME,
         PASSWORD
     }
 
-    static User login() {
+    public static User login() {
         User user = new User();
         while (true) if (loggedInSuccessfully(user)) break;
         user.welcome();
@@ -22,8 +25,8 @@ class Login {
 
     private static boolean loggedInSuccessfully(User user) {
         user.setUsername(input(USERNAME).toLowerCase());
-        user.setPassword(input(PASSWORD));
-        if (DBConnector.queryUser(user)) return true;
+        String password = input(PASSWORD);
+        if (DBConnector.queryUser(user, password)) return true;
         printColored(RED, "--- Wrong username or password, please try again ---");
         return false;
     }

@@ -1,13 +1,15 @@
-package thisseasx;
+package thisseasx.util;
+
+import thisseasx.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static thisseasx.ANSI.GREEN;
-import static thisseasx.ANSI.printColored;
+import static thisseasx.util.ANSI.GREEN;
+import static thisseasx.util.ANSI.printColored;
 
-class DBConnector {
+public class DBConnector {
 
     private static final String URL = "jdbc:mysql://localhost:3306/afdemp_java_1?useSSL=false";
     private static final String DB_USERNAME = "thiss";
@@ -24,7 +26,7 @@ class DBConnector {
 
     private static final String SQL_UPDATE = "UPDATE accounts SET amount = ? WHERE user_id = ?";
 
-    static boolean queryUser(User user) {
+    public static boolean queryUser(User user, String password) {
         initializeJDBC();
 
         String[] columns = {COL_ID};
@@ -35,7 +37,7 @@ class DBConnector {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPassword());
+            ps.setString(2, password);
             ResultSet data = ps.executeQuery();
 
             if (data.next()) {
@@ -50,7 +52,7 @@ class DBConnector {
         return false;
     }
 
-    static List<User> getOtherUsers(User user) {
+    public static List<User> getOtherUsers(User user) {
         List<User> users = new ArrayList<>();
 
         String[] columns = {COL_USERNAME, COL_ID};
@@ -67,7 +69,6 @@ class DBConnector {
             while (data.next()) {
                 User otherUser = new User();
                 otherUser.setUsername(data.getString("username"));
-                otherUser.setPassword("unknown_password");
                 otherUser.setId(data.getInt("id"));
                 users.add(otherUser);
             }
@@ -96,7 +97,7 @@ class DBConnector {
         return sb.toString();
     }
 
-    static int getBalance(User user) {
+    public static int getBalance(User user) {
         String[] columns = {COL_AMOUNT};
         String[] selection = {COL_USER_ID + "=?"};
         String sql = sqlQueryBuilder(TABLE_ACCOUNTS, columns, selection);
@@ -147,7 +148,7 @@ class DBConnector {
         return true;
     }
 
-    static boolean transfer(int amount, User source, User target) {
+    public static boolean transfer(int amount, User source, User target) {
         if (!withdraw(amount, source)) return false;
         deposit(amount, target);
         return true;

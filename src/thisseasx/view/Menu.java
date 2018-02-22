@@ -1,15 +1,18 @@
-package thisseasx;
+package thisseasx.view;
+
+import thisseasx.model.User;
+import thisseasx.service.AccountManager;
 
 import java.util.*;
 
-import static thisseasx.ANSI.*;
+import static thisseasx.util.ANSI.*;
 
-class Menu {
+public class Menu {
 
     private final AccountManager accountManager;
     private final List<Action> actions = new ArrayList<>();
 
-    Menu(User user) {
+    public Menu(User user) {
         accountManager = new AccountManager(user);
 
         if (user.getId() == 1) {
@@ -30,7 +33,7 @@ class Menu {
         }
     }
 
-    boolean executeAction() {
+    public boolean executeAction() {
         Action action = requestAction();
         switch (action) {
             case VIEW_CO_OP_ACCOUNT:
@@ -63,6 +66,7 @@ class Menu {
         int actionIndex;
         while (true) {
             printActions();
+            //noinspection Duplicates
             try {
                 actionIndex = sc.nextInt();
                 if (actionIndex > 0 && actionIndex <= actions.size()) break;

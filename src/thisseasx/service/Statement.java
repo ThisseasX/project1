@@ -1,4 +1,6 @@
-package thisseasx;
+package thisseasx.service;
+
+import thisseasx.model.User;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,8 +10,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static thisseasx.ANSI.MAGENTA;
-import static thisseasx.ANSI.printColored;
+import static thisseasx.util.ANSI.MAGENTA;
+import static thisseasx.util.ANSI.printColored;
 
 class Statement {
 

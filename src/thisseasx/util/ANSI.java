@@ -1,7 +1,8 @@
-package thisseasx;
+package thisseasx.util;
 
-class ANSI {
-    static final String
+public class ANSI {
+
+    public static final String
             RED = "\u001b[31m",
             GREEN = "\u001b[32m",
             YELLOW = "\u001b[33m",
@@ -11,14 +12,14 @@ class ANSI {
 
     private static final String RESET = "\u001b[0m";
 
-    static void printColored(String color, String text) {
+    public static void printColored(String color, String text) {
         StringBuilder sb = new StringBuilder();
         sb.append(color).append(text).append(RESET);
         System.out.println(sb);
     }
 
     @SuppressWarnings("SameParameterValue")
-    static void printColoredWithWarning(String color1, String color2, String text) {
+    public static void printColoredWithWarning(String color1, String color2, String text) {
         StringBuilder sb = new StringBuilder();
         sb.append(color1);
         sb.append(text.substring(text.indexOf("---"), text.lastIndexOf("---") + 3));

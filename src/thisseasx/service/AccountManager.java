@@ -1,20 +1,22 @@
-package thisseasx;
+package thisseasx.service;
 
-import com.sun.xml.internal.ws.util.StringUtils;
+import thisseasx.model.User;
+import thisseasx.util.DBConnector;
+import thisseasx.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import static thisseasx.ANSI.*;
+import static thisseasx.util.ANSI.*;
 
-class AccountManager {
+public class AccountManager {
 
     private final User user;
     private final List<User> otherUsers;
 
-    AccountManager(User user) {
+    public AccountManager(User user) {
         this.user = user;
         this.otherUsers = new ArrayList<>(DBConnector.getOtherUsers(user));
     }
@@ -38,6 +40,7 @@ class AccountManager {
         while (true) {
             printColored(BLUE, String.format("Please choose a user to %s their account.", prompt));
             otherUsers.forEach(x -> printColored(CYAN, String.format(("%s) %s"), otherUsers.indexOf(x) + 1, x)));
+            //noinspection Duplicates
             try {
                 userIndex = sc.nextInt();
                 if (userIndex > 0 && userIndex <= otherUsers.size()) break;
@@ -67,14 +70,14 @@ class AccountManager {
         return amount;
     }
 
-    void viewCoOpAccount() {
+    public void viewCoOpAccount() {
         int amount = DBConnector.getBalance(user);
         String transaction = "--- Requesting to view the Co-Operative's account balance ---\n\n" +
                 String.format("The Co-operative's account balance is: €%s.", amount);
         finalizeTransaction(transaction);
     }
 
-    void viewMemberAccounts() {
+    public void viewMemberAccounts() {
         StringBuilder sb = new StringBuilder();
         sb.append("--- Requesting to view other members' account balance ---\n\n");
         for (User otherUser : otherUsers) {
@@ -86,14 +89,14 @@ class AccountManager {
         finalizeTransaction(sb.toString());
     }
 
-    void viewOwnAccount() {
+    public void viewOwnAccount() {
         int amount = DBConnector.getBalance(user);
         String transaction = "--- Requesting to view your account balance ---\n\n" +
                 String.format("Your account balance is: €%s.", amount);
         finalizeTransaction(transaction);
     }
 
-    void withdrawFromMember() {
+    public void withdrawFromMember() {
         User source = requestUser(false);
         if (hasZeroBalance(source)) return;
         int amount;
@@ -110,7 +113,7 @@ class AccountManager {
         finalizeTransaction(transaction);
     }
 
-    void depositToMember() {
+    public void depositToMember() {
         if (hasZeroBalance(user)) return;
         User target = requestUser(true);
         int amount;
@@ -127,7 +130,7 @@ class AccountManager {
         finalizeTransaction(transaction);
     }
 
-    void depositToCoOp() {
+    public void depositToCoOp() {
         if (hasZeroBalance(user)) return;
         User target = new User();
         target.setId(1);
@@ -144,7 +147,7 @@ class AccountManager {
         finalizeTransaction(transaction);
     }
 
-    void sendStatement() {
+    public void sendStatement() {
         Statement.addTransaction("### END OF TODAY'S STATEMENT ###");
         Statement.writeStatement(user);
     }

@@ -1,5 +1,10 @@
 package thisseasx;
 
+import thisseasx.model.User;
+import thisseasx.service.Login;
+import thisseasx.view.Menu;
+
+@SuppressWarnings("StatementWithEmptyBody")
 class Main {
 
     public static void main(String[] args) {
@@ -7,7 +12,6 @@ class Main {
 
         Menu menu = new Menu(user);
 
-        // noinspection StatementWithEmptyBody
         while (menu.executeAction()) ;
 
         user.bye();

@@ -1,41 +1,33 @@
-package thisseasx;
+package thisseasx.model;
 
-import com.sun.xml.internal.ws.util.StringUtils;
+import thisseasx.util.ANSI;
+import thisseasx.util.StringUtils;
 
-class User {
+public class User {
 
     private String username;
-    private String password;
     private int id;
 
-    String getUsername() {
+    public String getUsername() {
         return username;
     }
-    void setUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    String getPassword() {
-        return password;
-    }
-    void setPassword(String password) {
-        this.password = password;
-    }
-
-    int getId() {
+    public int getId() {
         return id;
     }
-    void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    void welcome() {
+    public void welcome() {
         String welcome = String.format("\nWelcome %s! How may I help you today?%n",
                 StringUtils.capitalize(username));
         ANSI.printColored(ANSI.BLUE, welcome);
     }
-
-    void bye() {
+    public void bye() {
         String welcome = String.format("\nGoodbye %s! Have a great day!%n",
                 StringUtils.capitalize(username));
         ANSI.printColored(ANSI.BLUE, welcome);
