@@ -5,8 +5,6 @@ import thisseasx.service.Login;
 import thisseasx.util.CLS;
 import thisseasx.view.Menu;
 
-import java.util.Map;
-
 @SuppressWarnings("StatementWithEmptyBody")
 class Main {
 
