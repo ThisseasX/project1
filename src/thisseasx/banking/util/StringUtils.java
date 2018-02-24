@@ -1,4 +1,4 @@
-package thisseasx.util;
+package thisseasx.banking.util;
 
 public class StringUtils {
 

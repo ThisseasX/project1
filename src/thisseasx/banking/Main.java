@@ -1,9 +1,9 @@
-package thisseasx;
+package thisseasx.banking;
 
-import thisseasx.model.User;
-import thisseasx.service.Login;
-import thisseasx.util.CLS;
-import thisseasx.view.Menu;
+import thisseasx.banking.model.User;
+import thisseasx.banking.service.Login;
+import thisseasx.banking.util.CLS;
+import thisseasx.banking.view.Menu;
 
 @SuppressWarnings("StatementWithEmptyBody")
 class Main {

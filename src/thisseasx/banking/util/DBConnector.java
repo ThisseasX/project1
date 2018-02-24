@@ -1,6 +1,6 @@
-package thisseasx.util;
+package thisseasx.banking.util;
 
-import thisseasx.model.User;
+import thisseasx.banking.model.User;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -8,8 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static thisseasx.util.ANSI.GREEN;
-import static thisseasx.util.ANSI.printColored;
+import static thisseasx.banking.util.ANSI.GREEN;
+import static thisseasx.banking.util.ANSI.printColored;
 
 public class DBConnector {
 
@@ -20,9 +20,10 @@ public class DBConnector {
     private static final String TABLE_ACCOUNTS = "accounts";
     private static final String TABLE_USERS = "users";
 
+    private static final String COL_ID = "id";
     private static final String COL_USERNAME = "username";
     private static final String COL_PASSWORD = "password";
-    private static final String COL_ID = "id";
+
     private static final String COL_USER_ID = "user_id";
     private static final String COL_AMOUNT = "amount";
 
@@ -35,7 +36,7 @@ public class DBConnector {
         initializeJDBC();
 
         String[] columns = {COL_ID};
-        String[] selection = {COL_USERNAME + "=?", COL_PASSWORD + "=?"};
+        String[] selection = {COL_USERNAME + "=?", "BINARY " + COL_PASSWORD + "=?"};
         String sql = sqlQueryBuilder(TABLE_USERS, columns, selection);
 
         try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD);
@@ -84,24 +85,6 @@ public class DBConnector {
         return users;
     }
 
-    private static String sqlQueryBuilder(String table, String[] columns, String[] selection) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT ");
-        for (int i = 0; i < columns.length; i++) {
-            sb.append(columns[i]);
-            if (i == columns.length - 1) break;
-            sb.append(", ");
-        }
-        sb.append(" FROM ").append(table);
-        sb.append(" WHERE ");
-        for (int i = 0; i < selection.length; i++) {
-            sb.append(selection[i]);
-            if (i == selection.length - 1) break;
-            sb.append(" AND ");
-        }
-        return sb.toString();
-    }
-
     public static int getBalance(User user) {
         String[] columns = {COL_AMOUNT};
         String[] selection = {COL_USER_ID + "=?"};
@@ -121,24 +104,6 @@ public class DBConnector {
             System.out.println(e.getMessage());
         }
         return -1;
-    }
-
-    private static void deposit(int amount, User target) {
-        try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD);
-             PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
-
-            int finalAmount = getBalance(target) + amount;
-            ps.setInt(1, finalAmount);
-            String now = LocalDateTime
-                    .now()
-                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
-            ps.setString(2, now);
-            ps.setInt(3, target.getId());
-            ps.execute();
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     private static boolean withdraw(int amount, User source) {
@@ -161,10 +126,46 @@ public class DBConnector {
         return true;
     }
 
+    private static void deposit(int amount, User target) {
+        try (Connection conn = DriverManager.getConnection(URL, DB_USERNAME, DB_PASSWORD);
+             PreparedStatement ps = conn.prepareStatement(SQL_UPDATE)) {
+
+            int finalAmount = getBalance(target) + amount;
+            ps.setInt(1, finalAmount);
+            String now = LocalDateTime
+                    .now()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
+            ps.setString(2, now);
+            ps.setInt(3, target.getId());
+            ps.execute();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public static boolean transfer(int amount, User source, User target) {
         if (!withdraw(amount, source)) return false;
         deposit(amount, target);
         return true;
+    }
+
+    private static String sqlQueryBuilder(String table, String[] columns, String[] selection) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT ");
+        for (int i = 0; i < columns.length; i++) {
+            sb.append(columns[i]);
+            if (i == columns.length - 1) break;
+            sb.append(", ");
+        }
+        sb.append(" FROM ").append(table);
+        sb.append(" WHERE ");
+        for (int i = 0; i < selection.length; i++) {
+            sb.append(selection[i]);
+            if (i == selection.length - 1) break;
+            sb.append(" AND ");
+        }
+        return sb.toString();
     }
 
 

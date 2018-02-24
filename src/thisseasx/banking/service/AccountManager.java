@@ -1,16 +1,16 @@
-package thisseasx.service;
+package thisseasx.banking.service;
 
-import thisseasx.model.User;
-import thisseasx.util.CLS;
-import thisseasx.util.DBConnector;
-import thisseasx.util.StringUtils;
+import thisseasx.banking.model.User;
+import thisseasx.banking.util.CLS;
+import thisseasx.banking.util.DBConnector;
+import thisseasx.banking.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-import static thisseasx.util.ANSI.*;
+import static thisseasx.banking.util.ANSI.*;
 
 @SuppressWarnings("Duplicates")
 public class AccountManager {
@@ -28,6 +28,7 @@ public class AccountManager {
             String sourceAccount = user.getId() == 1 ?
                     StringUtils.capitalize(source.getUsername()) + "'s" :
                     "Your";
+            CLS.cls();
             printColored(RED, String.format("--- %s account balance is 0 ---\n",
                     sourceAccount));
             return true;
@@ -36,19 +37,21 @@ public class AccountManager {
     }
 
     private User requestUser(boolean deposit) {
+        CLS.cls();
         Scanner sc = new Scanner(System.in);
         String prompt = deposit ? "deposit to" : "withdraw from";
         int userIndex;
         while (true) {
-            CLS.cls();
             printColored(BLUE, String.format("Please choose a user to %s their account.", prompt));
             otherUsers.forEach(x -> printColored(CYAN, String.format(("%s) %s"), otherUsers.indexOf(x) + 1, x)));
             //noinspection Duplicates
             try {
                 userIndex = sc.nextInt();
+                CLS.cls();
                 if (userIndex > 0 && userIndex <= otherUsers.size()) break;
                 printColored(RED, String.format("--- You must input a number between 1 and %s ---", otherUsers.size()));
             } catch (InputMismatchException e) {
+                CLS.cls();
                 printColored(RED, "--- That's not a number ---");
                 sc.nextLine();
             }
@@ -60,13 +63,14 @@ public class AccountManager {
         Scanner sc = new Scanner(System.in);
         int amount;
         while (true) {
-            CLS.cls();
             printColored(BLUE, "Please choose an amount.");
             try {
                 amount = sc.nextInt();
+                CLS.cls();
                 if (amount > 0) break;
                 printColored(RED, "--- You must input a positive amount ---");
             } catch (InputMismatchException e) {
+                CLS.cls();
                 printColored(RED, "--- That's not a number ---");
                 sc.nextLine();
             }
@@ -104,13 +108,14 @@ public class AccountManager {
     }
 
     public void withdrawFromMember() {
+        CLS.cls();
         User source = requestUser(false);
         if (hasZeroBalance(source)) return;
         int amount;
         while (true) {
-            CLS.cls();
             amount = requestAmount();
             if (DBConnector.transfer(amount, source, user)) break;
+//            CLS.cls();
             printColored(RED, "--- INSUFFICIENT BALANCE ---");
         }
 
@@ -123,13 +128,14 @@ public class AccountManager {
     }
 
     public void depositToMember() {
+        CLS.cls();
         if (hasZeroBalance(user)) return;
         User target = requestUser(true);
         int amount;
         while (true) {
-            CLS.cls();
             amount = requestAmount();
             if (DBConnector.transfer(amount, user, target)) break;
+//            CLS.cls();
             printColored(RED, "--- INSUFFICIENT BALANCE ---");
         }
 
@@ -142,14 +148,15 @@ public class AccountManager {
     }
 
     public void depositToCoOp() {
+        CLS.cls();
         if (hasZeroBalance(user)) return;
         User target = new User();
         target.setId(1);
         int amount;
         while (true) {
-            CLS.cls();
             amount = requestAmount();
             if (DBConnector.transfer(amount, user, target)) break;
+            CLS.cls();
             printColored(RED, "--- INSUFFICIENT BALANCE ---");
         }
 

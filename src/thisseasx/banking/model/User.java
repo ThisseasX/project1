@@ -1,7 +1,7 @@
-package thisseasx.model;
+package thisseasx.banking.model;
 
-import thisseasx.util.ANSI;
-import thisseasx.util.StringUtils;
+import thisseasx.banking.util.ANSI;
+import thisseasx.banking.util.StringUtils;
 
 public class User {
 

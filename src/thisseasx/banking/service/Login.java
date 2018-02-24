@@ -1,14 +1,14 @@
-package thisseasx.service;
+package thisseasx.banking.service;
 
-import thisseasx.model.User;
-import thisseasx.util.CLS;
-import thisseasx.util.DBConnector;
+import thisseasx.banking.model.User;
+import thisseasx.banking.util.CLS;
+import thisseasx.banking.util.DBConnector;
 
 import java.util.Scanner;
 
-import static thisseasx.service.Login.UserInfo.PASSWORD;
-import static thisseasx.service.Login.UserInfo.USERNAME;
-import static thisseasx.util.ANSI.*;
+import static thisseasx.banking.service.Login.UserInfo.PASSWORD;
+import static thisseasx.banking.service.Login.UserInfo.USERNAME;
+import static thisseasx.banking.util.ANSI.*;
 
 public class Login {
 
