@@ -2,7 +2,6 @@ package thisseasx.banking;
 
 import thisseasx.banking.model.User;
 import thisseasx.banking.service.Login;
-import thisseasx.banking.util.CLS;
 import thisseasx.banking.view.Menu;
 
 @SuppressWarnings("StatementWithEmptyBody")

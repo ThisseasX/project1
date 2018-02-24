@@ -2,7 +2,6 @@ package thisseasx.banking.view;
 
 import thisseasx.banking.model.User;
 import thisseasx.banking.service.AccountManager;
-import thisseasx.banking.util.CLS;
 
 import java.util.*;
 
@@ -10,7 +9,29 @@ import static thisseasx.banking.util.ANSI.*;
 
 public class Menu {
 
+    private enum Action {
+        VIEW_CO_OP_ACCOUNT("View Co-operative's Account."),
+        VIEW_MEMBER_ACCOUNTS("View Member Accounts."),
+        VIEW_OWN_ACCOUNT("View your Account."),
+        WITHDRAW_FROM_MEMBER("Withdraw from another Member's Account."),
+        DEPOSIT_TO_MEMBER("Deposit to another Member's Account."),
+        DEPOSIT_TO_CO_OP("Deposit to the Co-operative's Account."),
+        SEND_STATEMENT("Send today's statement and logout.");
+
+        private final String hint;
+
+        Action(String hint) {
+            this.hint = hint;
+        }
+
+        @Override
+        public String toString() {
+            return hint;
+        }
+    }
+
     private final AccountManager accountManager;
+
     private final List<Action> actions = new ArrayList<>();
 
     public Menu(User user) {
@@ -82,26 +103,5 @@ public class Menu {
 
     private void printActions() {
         actions.forEach(x -> printColored(YELLOW, String.format(("%s) %s"), actions.indexOf(x) + 1, x)));
-    }
-
-    private enum Action {
-        VIEW_CO_OP_ACCOUNT("View Co-operative's Account."),
-        VIEW_MEMBER_ACCOUNTS("View Member Accounts."),
-        VIEW_OWN_ACCOUNT("View your Account."),
-        WITHDRAW_FROM_MEMBER("Withdraw from another Member's Account."),
-        DEPOSIT_TO_MEMBER("Deposit to another Member's Account."),
-        DEPOSIT_TO_CO_OP("Deposit to the Co-operative's Account."),
-        SEND_STATEMENT("Send today's statement and logout.");
-
-        private final String hint;
-
-        Action(String hint) {
-            this.hint = hint;
-        }
-
-        @Override
-        public String toString() {
-            return hint;
-        }
     }
 }

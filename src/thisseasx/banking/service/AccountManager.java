@@ -1,7 +1,6 @@
 package thisseasx.banking.service;
 
 import thisseasx.banking.model.User;
-import thisseasx.banking.util.CLS;
 import thisseasx.banking.util.DBConnector;
 import thisseasx.banking.util.StringUtils;
 

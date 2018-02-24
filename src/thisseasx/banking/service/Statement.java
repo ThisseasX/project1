@@ -42,11 +42,13 @@ class Statement {
     }
 
     static void writeStatement(User user) {
+        String historyString = getHistory();
+
         printColored(MAGENTA, "### TODAY'S STATEMENT ###\n");
-        printColored(MAGENTA, getHistory());
+        printColored(MAGENTA, historyString);
         try {
             PrintWriter pw = new PrintWriter(new FileWriter(getFileName(user), true));
-            pw.append(getHistory()).append("\n");
+            pw.append(historyString).append("\n");
             pw.close();
         } catch (IOException e) {
             e.printStackTrace();

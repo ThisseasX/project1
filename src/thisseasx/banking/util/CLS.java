@@ -2,7 +2,8 @@ package thisseasx.banking.util;
 
 import java.io.IOException;
 
-public class CLS {
+@SuppressWarnings("unused")
+class CLS {
 
     public static void cls() {
         try {
