@@ -71,10 +71,8 @@ public class Menu {
             try {
                 actionIndex = sc.nextInt();
                 if (actionIndex > 0 && actionIndex <= actions.size()) break;
-                CLS.cls();
                 printColored(RED, String.format("--- You must input a number between 1 and %s ---", actions.size()));
             } catch (InputMismatchException e) {
-                CLS.cls();
                 printColored(RED, "--- That's not a number ---");
                 sc.nextLine();
             }

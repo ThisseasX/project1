@@ -20,7 +20,6 @@ public class Login {
     public static User login() {
         User user = new User();
         while (true) if (loggedInSuccessfully(user)) break;
-        CLS.cls();
         user.welcome();
         return user;
     }
@@ -29,7 +28,6 @@ public class Login {
         user.setUsername(input(USERNAME).toLowerCase());
         String password = input(PASSWORD);
         if (DBConnector.queryUser(user, password)) return true;
-        CLS.cls();
         printColored(RED, "--- Wrong username or password, please try again ---");
         return false;
     }

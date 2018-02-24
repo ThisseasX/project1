@@ -28,7 +28,6 @@ public class AccountManager {
             String sourceAccount = user.getId() == 1 ?
                     StringUtils.capitalize(source.getUsername()) + "'s" :
                     "Your";
-            CLS.cls();
             printColored(RED, String.format("--- %s account balance is 0 ---\n",
                     sourceAccount));
             return true;
@@ -37,7 +36,6 @@ public class AccountManager {
     }
 
     private User requestUser(boolean deposit) {
-        CLS.cls();
         Scanner sc = new Scanner(System.in);
         String prompt = deposit ? "deposit to" : "withdraw from";
         int userIndex;
@@ -47,11 +45,9 @@ public class AccountManager {
             //noinspection Duplicates
             try {
                 userIndex = sc.nextInt();
-                CLS.cls();
                 if (userIndex > 0 && userIndex <= otherUsers.size()) break;
                 printColored(RED, String.format("--- You must input a number between 1 and %s ---", otherUsers.size()));
             } catch (InputMismatchException e) {
-                CLS.cls();
                 printColored(RED, "--- That's not a number ---");
                 sc.nextLine();
             }
@@ -66,11 +62,9 @@ public class AccountManager {
             printColored(BLUE, "Please choose an amount.");
             try {
                 amount = sc.nextInt();
-                CLS.cls();
                 if (amount > 0) break;
                 printColored(RED, "--- You must input a positive amount ---");
             } catch (InputMismatchException e) {
-                CLS.cls();
                 printColored(RED, "--- That's not a number ---");
                 sc.nextLine();
             }
@@ -79,7 +73,6 @@ public class AccountManager {
     }
 
     public void viewCoOpAccount() {
-        CLS.cls();
         int amount = DBConnector.getBalance(user);
         String transaction = "--- Requesting to view the Co-Operative's account balance ---\n\n" +
                 String.format("The Co-operative's account balance is: €%s.", amount);
@@ -87,7 +80,6 @@ public class AccountManager {
     }
 
     public void viewMemberAccounts() {
-        CLS.cls();
         StringBuilder sb = new StringBuilder();
         sb.append("--- Requesting to view other members' account balance ---\n\n");
         for (User otherUser : otherUsers) {
@@ -100,7 +92,6 @@ public class AccountManager {
     }
 
     public void viewOwnAccount() {
-        CLS.cls();
         int amount = DBConnector.getBalance(user);
         String transaction = "--- Requesting to view your account balance ---\n\n" +
                 String.format("Your account balance is: €%s.", amount);
@@ -108,18 +99,15 @@ public class AccountManager {
     }
 
     public void withdrawFromMember() {
-        CLS.cls();
         User source = requestUser(false);
         if (hasZeroBalance(source)) return;
         int amount;
         while (true) {
             amount = requestAmount();
             if (DBConnector.transfer(amount, source, user)) break;
-//            CLS.cls();
             printColored(RED, "--- INSUFFICIENT BALANCE ---");
         }
 
-        CLS.cls();
         String transaction = "--- Requesting withdrawal ---\n\n" +
                 String.format("Withdrew €%s from %s's account into the Co-operative's account.",
                         amount, source);
@@ -128,18 +116,15 @@ public class AccountManager {
     }
 
     public void depositToMember() {
-        CLS.cls();
         if (hasZeroBalance(user)) return;
         User target = requestUser(true);
         int amount;
         while (true) {
             amount = requestAmount();
             if (DBConnector.transfer(amount, user, target)) break;
-//            CLS.cls();
             printColored(RED, "--- INSUFFICIENT BALANCE ---");
         }
 
-        CLS.cls();
         String transaction = "--- Requesting deposit ---\n\n" +
                 String.format("Deposited €%s to %s's account.",
                         amount, target);
@@ -148,7 +133,6 @@ public class AccountManager {
     }
 
     public void depositToCoOp() {
-        CLS.cls();
         if (hasZeroBalance(user)) return;
         User target = new User();
         target.setId(1);
@@ -156,11 +140,9 @@ public class AccountManager {
         while (true) {
             amount = requestAmount();
             if (DBConnector.transfer(amount, user, target)) break;
-            CLS.cls();
             printColored(RED, "--- INSUFFICIENT BALANCE ---");
         }
 
-        CLS.cls();
         String transaction = "--- Requesting deposit to the Co-operative's account---\n\n" +
                 String.format("Deposited €%s to the Co-operative's account.", amount);
 
@@ -168,7 +150,6 @@ public class AccountManager {
     }
 
     public void sendStatement() {
-        CLS.cls();
         Statement.addTransaction("### END OF TODAY'S STATEMENT ###");
         Statement.writeStatement(user);
     }

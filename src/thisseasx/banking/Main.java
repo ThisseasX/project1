@@ -9,8 +9,6 @@ import thisseasx.banking.view.Menu;
 class Main {
 
     public static void main(String[] args) {
-        CLS.cls();
-
         User user = Login.login();
 
         Menu menu = new Menu(user);
