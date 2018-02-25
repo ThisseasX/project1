@@ -22,18 +22,6 @@ public class AccountManager {
         this.otherUsers = new ArrayList<>(DBConnector.getOtherUsers(user));
     }
 
-    private boolean hasZeroBalance(User source) {
-        if (DBConnector.getBalance(source) <= 0) {
-            String sourceAccount = user.getId() == 1 ?
-                    StringUtils.capitalize(source.getUsername()) + "'s" :
-                    "Your";
-            printColored(RED, String.format("--- %s account balance is 0 ---\n",
-                    sourceAccount));
-            return true;
-        }
-        return false;
-    }
-
     private User requestUser(boolean deposit) {
         Scanner sc = new Scanner(System.in);
         String prompt = deposit ? "deposit to" : "withdraw from";
@@ -95,6 +83,18 @@ public class AccountManager {
         String transaction = "--- Requesting to view your account balance ---\n\n" +
                 String.format("Your account balance is: €%s.", amount);
         finalizeTransaction(transaction);
+    }
+
+    private boolean hasZeroBalance(User source) {
+        if (DBConnector.getBalance(source) <= 0) {
+            String sourceAccount = user.getId() == 1 ?
+                    StringUtils.capitalize(source.getUsername()) + "'s" :
+                    "Your";
+            printColored(RED, String.format("--- %s account balance is 0 ---\n",
+                    sourceAccount));
+            return true;
+        }
+        return false;
     }
 
     public void withdrawFromMember() {
